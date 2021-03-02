@@ -7,7 +7,7 @@
 #update5 : make error message by 'try&except' / make sure to restart the game by 'continue' / make odds
 #update6 : make odds detail / make definitions for simple code / make color for situation
 #update7 : make color for windows situation 
-
+#update8 : calculate odds rounded up to the second digit after the decimal point / 
 
  
 import ctypes
@@ -52,10 +52,9 @@ num_win = 0
 num_draw = 0
 num_lose = 0
 num_game = 1
-odds = 0.0
 
 while True:
-    a = input('\nGame{0}\nShow your hand(rock, paper, scissors): '.format(num_game))
+    a = input('\nGame {0}\nShow your hand(rock, paper, scissors): '.format(num_game))
     player = a.lower()
     try:
         error1(player)
@@ -63,7 +62,6 @@ while True:
         print('PLEASE type one of these(rock, paper, scissors)')
         continue
 
-    num_game += 1
     computer = random.choice(Type)
     # print(computer)
 
@@ -96,9 +94,13 @@ while True:
 
     try:
         odds = num_win / (num_game-num_draw) * 100
-        b = input('Your odds(win:draw:lose, odds): {0}:{1}:{2}, {3}% \nWant to play again? Press ENTER: '.format(num_win, num_draw, num_lose, odds))
+        simple_odds = format(odds, ".2f")
+        b = input('Your odds(win:draw:lose, odds): {0}:{1}:{2}, {3}% \nWant to play again? Press ENTER: '.format(num_win, num_draw, num_lose, simple_odds))
     except:
-        b = input('Your odds(win:draw:lose, odds): {0}:{1}:{2}, {3}% \nWant to play again? Press ENTER: '.format(num_win, num_draw, num_lose, odds))
+        simple_odds = 0.00 # num_game = num_draw
+        b = input('Your odds(win:draw:lose, odds): {0}:{1}:{2}, {3}% \nWant to play again? Press ENTER: '.format(num_win, num_draw, num_lose, simple_odds))
+    
+    num_game += 1
 
     if b != "":
         print('\nSee you')
