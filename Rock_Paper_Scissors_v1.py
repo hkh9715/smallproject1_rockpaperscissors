@@ -12,20 +12,26 @@
  
 import ctypes
 import random
+import os
+
+num_win = 0
+num_draw = 0
+num_lose = 0
+num_game = 1
 
 STD_INPUT_HANDLE   = -10
 STD_OUTPUT_HANDLE  = -11
 STD_ERROR_HANDLE   = -12
- 
-FOREGROUND_BLACK     = 0x00
-FOREGROUND_BLUE      = 0x01 # text color contains blue.
-FOREGROUND_GREEN     = 0x02 # text color contains green.
-FOREGROUND_RED       = 0x04 # text color contains red.
-FOREGROUND_INTENSITY = 0x08 # text color is intensified.
-BACKGROUND_BLUE      = 0x10 # background color contains blue.
-BACKGROUND_GREEN     = 0x20 # background color contains green.
-BACKGROUND_RED       = 0x40 # background color contains red.
-BACKGROUND_INTENSITY = 0x80 # background color is intensified.
+
+# FOREGROUND_BLACK     = 0x00
+# FOREGROUND_BLUE      = 0x01 # text color contains blue.
+# FOREGROUND_GREEN     = 0x02 # text color contains green.
+# FOREGROUND_RED       = 0x04 # text color contains red.
+# FOREGROUND_INTENSITY = 0x08 # text color is intensified.
+# BACKGROUND_BLUE      = 0x10 # background color contains blue.
+# BACKGROUND_GREEN     = 0x20 # background color contains green.
+# BACKGROUND_RED       = 0x40 # background color contains red.
+# BACKGROUND_INTENSITY = 0x80 # background color is intensified.
 
 std_out_handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
 Type = ['rock', 'paper', 'scissors']
@@ -33,6 +39,13 @@ Type = ['rock', 'paper', 'scissors']
 def set_color(color, handle=std_out_handle):
     bool = ctypes.windll.kernel32.SetConsoleTextAttribute(handle, color)
     return bool
+
+def clrscr():
+    """ Clears the console in order to make a more pleasant game """
+    if os.name == "posix":  # compatible with Unix/Linux/MacOS/BSD/etc
+        os.system('clear')
+    elif os.name in ("nt", "dos", "ce"):  # compatible with DOS/Windows
+        os.system('CLS')
 
 def error1(e1):
     if e1 not in Type:
@@ -48,10 +61,8 @@ def result_lose(player, computer):
     print('You lose:', 'player {0}, computer {1}'.format(player, computer))
     set_color(7)
 
-num_win = 0
-num_draw = 0
-num_lose = 0
-num_game = 1
+
+clrscr()
 
 while True:
     a = input('\nGame {0}\nShow your hand(rock, paper, scissors): '.format(num_game))
